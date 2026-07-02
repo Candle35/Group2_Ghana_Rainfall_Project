@@ -30,11 +30,19 @@ def clean_data(df):
     df = df.drop(columns=[col for col in DROP_COLS if col in df.columns])
 
     # Step 2 — parse prediction_time and extract features
-    df['prediction_time'] = pd.to_datetime(df['prediction_time'], errors='coerce')
-    df['prediction_hour']  = df['prediction_time'].dt.hour
-    df['prediction_month'] = df['prediction_time'].dt.month
-    df = df.drop(columns=['prediction_time'])
+    #df['prediction_time'] = pd.to_datetime(df['prediction_time'], errors='coerce')
+    #df['prediction_hour']  = df['prediction_time'].dt.hour
+    #df['prediction_month'] = df['prediction_time'].dt.month
+    #df = df.drop(columns=['prediction_time'])
 
+    if 'prediction_time' in df.columns:
+        df['prediction_time'] = pd.to_datetime(df['prediction_time'], errors='coerce')
+        df['prediction_hour'] = df['prediction_time'].dt.hour
+        df['prediction_month'] = df['prediction_time'].dt.month
+        df = df.drop(columns=['prediction_time'])
+
+
+    # Create time features only if prediction_time exists
     return df
 
 def normalize_text_column(df, col):
