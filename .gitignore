@@ -1,0 +1,14 @@
+# VS Code settings
+.vscode/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Model files
+models/
+*.pkl
+
+# Data files
+data/
+*.csv
