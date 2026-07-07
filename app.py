@@ -110,6 +110,43 @@ model = get_model()
 RESULT_COLORS = ["#1976D2", "#2E7D32", "#F9A825", "#C62828", "#6A1B9A"]
 RESULT_ICONS = ["🌦️", "🌧️", "⛅", "☀️", "⛈️"]
 
+def irrigation_advisory(predicted_category: str) -> dict:
+    """
+    Maps a predicted rainfall category to an irrigation advisory.
+    Handles labels like "MEDIUMRAIN", "Medium Rain", "medium rain", etc.
+    """
+    category = predicted_category.strip().lower().replace(" ", "")
+
+    if category == "heavyrain":
+        return {
+            "level": "no_irrigation_needed",
+            "message": "Heavy rainfall predicted. Irrigation not necessary this period.",
+        }
+    elif category == "mediumrain":
+        return {
+            "level": "irrigation_optional",
+            "message": "Medium rainfall predicted. Irrigation may help but is not critical.",
+        }
+    elif category == "lightrain":
+        return {
+            "level": "irrigation_recommended",
+            "message": "Light rainfall predicted. Irrigation recommended to supplement crop water needs.",
+        }
+    elif category == "norain":
+        return {
+            "level": "irrigation_strongly_recommended",
+            "message": "No rainfall predicted. Irrigation strongly recommended.",
+        }
+    elif category == "smallrain":
+        return {
+            "level": "irrigation_recommended",
+            "message": "Small rainfall predicted. Irrigation recommended to ensure adequate water supply.",
+        }
+    else:
+        return {
+            "level": "unknown",
+            "message": f"Unrecognized rainfall category ('{predicted_category}'). Unable to provide irrigation advice.",
+        }
 
 def color_for_label(label: str) -> str:
     labels = list(TARGET_CLASSES) if hasattr(TARGET_CLASSES, "__iter__") else []
@@ -235,6 +272,18 @@ with tab1:
             hide_index=True,
             use_container_width=True,
         )
+
+        # ---- Irrigation advisory ----
+        advisory = irrigation_advisory(label)
+        st.markdown('<p class="section-title">💧 Irrigation Advisory</p>', unsafe_allow_html=True)
+        if advisory["level"] == "no_irrigation_needed":
+            st.success(advisory["message"])
+        elif advisory["level"] == "irrigation_optional":
+            st.info(advisory["message"])
+        elif advisory["level"] == "irrigation_recommended":
+            st.warning(advisory["message"])
+        else:
+            st.error(advisory["message"])
 
         st.caption(
             "⚠️ This is a decision-support estimate, not a certified weather forecast. "
