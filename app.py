@@ -336,6 +336,8 @@ with tab2:
                     st.metric("Total Records Processed", len(results))
                     most_common = results["Label"].mode()[0]
                     st.metric("Most Common Prediction", most_common)
+                    needs_irrigation = (results["Label"].str.lower() != "heavy rain").sum()
+                    st.metric("Records Needing Irrigation", f"{needs_irrigation}/{len(results)}")
 
                 st.markdown("**Distribution of Predicted Rainfall Types**")
                 fig, ax = plt.subplots(figsize=(6, 4))
