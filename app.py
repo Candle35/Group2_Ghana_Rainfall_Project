@@ -318,6 +318,9 @@ with tab2:
             if run_clicked:
                 with st.spinner(f"Predicting rainfall type for {len(df)} records..."):
                     results = predict_batch(model, df)
+                    results["irrigation_advisory"] = results["Label"].apply(
+                        lambda lbl: irrigation_advisory(lbl)["message"]
+                    )
 
                 st.divider()
                 st.markdown('<p class="section-title">Results</p>', unsafe_allow_html=True)
@@ -353,6 +356,7 @@ with tab2:
                     "rainfall_predictions.csv",
                     type="primary",
                 )
+
     else:
         st.info(
             "No file uploaded yet. Your CSV should include one row per observation, "
