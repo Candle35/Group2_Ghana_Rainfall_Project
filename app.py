@@ -54,11 +54,13 @@ st.markdown("""
 # CONSTANTS — slide palette colors
 # -----------------------------------------------------------------------
 RESULT_COLORS = {
-    'NORAIN':     '#0B5563',
+    'NORAIN':     '#C9763B',
     'SMALLRAIN':  '#4D8A8F',
     'MEDIUMRAIN': '#8FB8BB',
-    'HEAVYRAIN':  '#C9763B',
+    'HEAVYRAIN':  '#0B5563',
 }
+
+
 RESULT_ICONS = {
     'NORAIN':     '☀️',
     'SMALLRAIN':  '🌦️',
