@@ -110,6 +110,13 @@ TWI_ADVISORIES = {
     'HEAVYRAIN':  'Nsuo kɛseɛ bɛtɔ. Nsuo tumi agu afuo so. Mfa nnua nkumaa ntwa nnɛ.',
 }
 
+TWI_ADVISORIES = {
+    'NORAIN':     'Nsuo rentɔ. Sua nsuo agu afuo so. Ɛseseɛ wode nsuo gu nnobaeɛ no so paa.',
+    'SMALLRAIN':  'Nsuo kakra bɛtɔ. Fa nsuo kakra gu nnobaeɛ no so. Nsuo kakra ɛbɛtɔ no nkoara ntɔmi mboa nnoɔbaeɛ no.',
+    'MEDIUMRAIN': 'Nsuo bɛtɔ kakra. Wobɛtumi dɛ nsuo agu nnoɔbaeɛ no so, nanso ɛho nhia pii saa.',
+    'HEAVYRAIN':  'Nsuo kɛseɛ bɛtɔ.  Mfa nsuo ngu nnobaeɛ no so biom',
+}
+
 # -----------------------------------------------------------------------
 # HELPER FUNCTIONS
 # -----------------------------------------------------------------------
@@ -476,7 +483,8 @@ with tab2:
                 with st.spinner(f"Predicting for {len(df_batch):,} records..."):
                     results = predict_batch(model, df_batch)
                     results["Irrigation Advisory"] = results["Label"].apply(
-                        lambda lbl: irrigation_advisory(lbl)["message"]
+                        lambda lbl: TWI_ADVISORIES.get(lbl, irrigation_advisory(lbl)["message"])
+                        if lang == "Twi" else irrigation_advisory(lbl)["message"]
                     )
 
                 st.divider()
